@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReyCloudDev - Auto Payment</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #00f2ff; --bg: #0a0a0c; --card: rgba(255, 255, 255, 0.05); }
+        body { margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; background: var(--bg); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: var(--card); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 2.5rem; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        h1 { color: var(--primary); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 3px; text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+        .input-group { margin-bottom: 1.5rem; text-align: left; }
+        label { display: block; margin-bottom: 0.8rem; color: var(--primary); font-weight: bold; }
+        input { width: 100%; padding: 14px; background: rgba(0,0,0,0.5); border: 1px solid rgba(0,242,255,0.3); border-radius: 10px; color: white; font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; box-sizing: border-box; outline: none; }
+        button { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 10px; color: black; font-weight: bold; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,242,255,0.4); }
+        .hidden { display: none; }
+        .qr-frame { background: white; padding: 15px; border-radius: 15px; display: inline-block; margin-bottom: 1.5rem; }
+        #qr-img { width: 220px; height: 220px; display: block; }
+        .status-badge { display: inline-block; padding: 8px 20px; background: rgba(0,242,255,0.1); border: 1px solid var(--primary); border-radius: 30px; font-size: 0.9rem; color: var(--primary); margin-top: 10px; }
+        .loader { border: 3px solid #333; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: none; margin: 15px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ReyCloudDev</h1>
+        <p>Automatic Payment Gateway</p>
+        <div id="payment-form">
+            <div class="input-group">
+                <label>Nominal (Min. 1.000)</label>
+                <input type="number" id="amount" placeholder="Contoh: 10000" min="1000">
+            </div>
+            <button onclick="generateQRIS()" id="btn-generate">Generate QRIS</button>
+            <div id="loader" class="loader"></div>
+        </div>
+        <div id="qr-result" class="hidden">
+            <div class="qr-frame"><img id="qr-img" src="" alt="QRIS"></div>
+            <div>
+                <div style="margin-bottom: 5px;">ID: <span id="id-order" style="color: var(--primary);"></span></div>
+                <div class="status-badge" id="status-text">MENUNGGU PEMBAYARAN</div>
+            </div>
+            <button onclick="location.reload()" style="margin-top: 20px; background: transparent; border: 1px solid #444; color: white;">Batal / Baru</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
