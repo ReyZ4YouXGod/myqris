@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function (req, res) {
     const { amount } = req.body;
     const orderId = "RC-" + Date.now();
 
@@ -26,4 +26,4 @@ export default async function handler(req, res) {
     } catch {
         res.status(500).json({ error: true });
     }
-}
+};
