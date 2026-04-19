@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function (req, res) {
     const { order_id, amount } = req.body;
 
     try {
@@ -10,24 +10,20 @@ export default async function handler(req, res) {
         if (data.transaction?.status === "completed") {
 
             await fetch(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        chat_id: process.env.CHAT_ID,
-        parse_mode: "HTML",
-        text:
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    chat_id: process.env.CHAT_ID,
+                    parse_mode: "HTML",
+                    text:
 `🔔 <b>PAYMENT BERHASIL</b>
 ━━━━━━━━━━━━━━━━━━
-🆔 <b>Order ID:</b> <code>${order_id}</code>
-💰 <b>Nominal:</b> Rp ${(Number(amount) || 0).toLocaleString("id-ID")}
-📊 <b>Status:</b> <b>SUCCESS</b>
-⏰ <b>Waktu:</b> ${new Date().toLocaleString("id-ID")}
-━━━━━━━━━━━━━━━━━━
-🚀 <i>ReyCloudDev Payment Gateway</i>`
-    })
-});
+🆔 <code>${order_id}</code>
+💰 Rp ${(Number(amount) || 0).toLocaleString("id-ID")}
+⏰ ${new Date().toLocaleString("id-ID")}
+━━━━━━━━━━━━━━━━━━`
+                })
+            });
 
             return res.json({ status: "completed" });
         }
@@ -37,4 +33,4 @@ export default async function handler(req, res) {
     } catch {
         res.status(500).json({ error: true });
     }
-}
+};
